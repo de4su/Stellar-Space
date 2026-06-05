@@ -22,8 +22,28 @@ namespace Unity.FPS.Roguelike
             foreach (var upgrade in upgrades)
             {
                 GameObject card = Instantiate(UpgradeCardPrefab, CardsParent);
-                // Setup card UI (assuming it has a script or we find components)
-                card.GetComponentInChildren<TextMeshProUGUI>().text = upgrade.Title + "\n" + upgrade.Description;
+                // Setup card UI
+                Transform textT = card.transform.Find("Text");
+                if (textT != null)
+                {
+                    TextMeshProUGUI tmp = textT.GetComponent<TextMeshProUGUI>();
+                    if (tmp != null)
+                    {
+                        tmp.text = "<b>" + upgrade.Title + "</b>\n\n" + upgrade.Description;
+                    }
+                }
+                
+                Transform iconT = card.transform.Find("Icon");
+                if (iconT != null)
+                {
+                    UnityEngine.UI.Image iconImg = iconT.GetComponent<UnityEngine.UI.Image>();
+                    if (iconImg != null)
+                    {
+                        iconImg.sprite = upgrade.Icon;
+                        iconImg.enabled = upgrade.Icon != null;
+                    }
+                }
+
                 Button btn = card.GetComponent<Button>();
                 btn.onClick.RemoveAllListeners();
                 btn.onClick.AddListener(() => {

@@ -16,4 +16,4 @@ MonoBehaviour:
   Description: +30% Fire Rate
   Type: 0
   Value: 0.3
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: b30c65bc26a2d6e438ed196d15f7eb06, type: 3}

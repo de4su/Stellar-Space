@@ -17,6 +17,10 @@ public enum PlayerMode { None, Tank, Agile }
         public List<UpgradeData> TankUpgrades;
         public List<UpgradeData> AgileUpgrades;
         public List<UpgradeData> ModeSelectionUpgrades; // level 1 options
+        
+        public List<UpgradeData> ActiveUpgrades = new List<UpgradeData>();
+        public UnityEngine.Events.UnityAction OnUpgradesUpdated;
+
         public UpgradeData TankShieldSpecial; // level 3
         public UpgradeData AgileHookSpecial; // level 3
         public UpgradeData GrenadeSpecial; // level 10
@@ -164,6 +168,9 @@ public enum PlayerMode { None, Tank, Agile }
         public void SelectUpgrade(UpgradeData upgrade)
         {
             Debug.Log("[Roguelike] Selected upgrade: " + upgrade.Title + " (Type: " + upgrade.Type + ")");
+            
+            ActiveUpgrades.Add(upgrade);
+            OnUpgradesUpdated?.Invoke();
 
             // Re-enable player input
             var inputHandler = GetComponent<PlayerInputHandler>();
@@ -178,15 +185,29 @@ public enum PlayerMode { None, Tank, Agile }
                     {
                         CurrentMode = PlayerMode.Tank;
                         Debug.Log("[Roguelike] Switched to TANK Mode: Slow & Durable");
-                        PlayerStats.Instance.ApplyUpgrade(new UpgradeData { Type = UpgradeType.PlayerSpeed, Value = -0.3f });
-                        PlayerStats.Instance.ApplyUpgrade(new UpgradeData { Type = UpgradeType.MaxHealth, Value = 0.5f });
+                        UpgradeData tankSpeed = ScriptableObject.CreateInstance<UpgradeData>();
+                        tankSpeed.Type = UpgradeType.PlayerSpeed;
+                        tankSpeed.Value = -0.3f;
+                        PlayerStats.Instance.ApplyUpgrade(tankSpeed);
+
+                        UpgradeData tankHealth = ScriptableObject.CreateInstance<UpgradeData>();
+                        tankHealth.Type = UpgradeType.MaxHealth;
+                        tankHealth.Value = 0.5f;
+                        PlayerStats.Instance.ApplyUpgrade(tankHealth);
                     }
                     else if (upgrade.Title.Contains("Agile"))
                     {
                         CurrentMode = PlayerMode.Agile;
                         Debug.Log("[Roguelike] Switched to AGILE Mode: Fast & Nimble");
-                        PlayerStats.Instance.ApplyUpgrade(new UpgradeData { Type = UpgradeType.PlayerSpeed, Value = 0.25f });
-                        PlayerStats.Instance.ApplyUpgrade(new UpgradeData { Type = UpgradeType.JumpHeight, Value = 0.2f });
+                        UpgradeData agileSpeed = ScriptableObject.CreateInstance<UpgradeData>();
+                        agileSpeed.Type = UpgradeType.PlayerSpeed;
+                        agileSpeed.Value = 0.25f;
+                        PlayerStats.Instance.ApplyUpgrade(agileSpeed);
+
+                        UpgradeData agileJump = ScriptableObject.CreateInstance<UpgradeData>();
+                        agileJump.Type = UpgradeType.JumpHeight;
+                        agileJump.Value = 0.2f;
+                        PlayerStats.Instance.ApplyUpgrade(agileJump);
                     }
                 }
                 else

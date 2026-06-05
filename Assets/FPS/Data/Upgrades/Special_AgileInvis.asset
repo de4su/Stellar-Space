@@ -16,4 +16,4 @@ MonoBehaviour:
   Description: Press Q to become invisible. Consumes energy.
   Type: 6
   Value: 1
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: e096a234527698e4c9dfc4e0278f0307, type: 3}

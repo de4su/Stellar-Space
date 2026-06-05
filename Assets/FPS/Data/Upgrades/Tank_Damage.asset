@@ -16,4 +16,4 @@ MonoBehaviour:
   Description: +20% Damage
   Type: 4
   Value: 0.2
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: a29094b5ac3f4d64485fcef823710314, type: 3}

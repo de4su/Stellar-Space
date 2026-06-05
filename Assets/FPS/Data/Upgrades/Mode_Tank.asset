@@ -16,4 +16,4 @@ MonoBehaviour:
   Description: Slow but powerful. High health and damage.
   Type: 6
   Value: 1
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 9a4f7de33a7e6924380a347070ab0789, type: 3}

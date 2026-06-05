@@ -16,4 +16,4 @@ MonoBehaviour:
   Description: Press Q to kick enemies for massive knockback and damage.
   Type: 6
   Value: 1
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 8bd841d279c14c746a7a7cb91d4ce166, type: 3}
