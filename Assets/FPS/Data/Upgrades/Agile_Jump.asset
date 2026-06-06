@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Agile_Jump
   m_EditorClassIdentifier: Roguelike::Unity.FPS.Roguelike.UpgradeData
   Title: Higher Jump
-  Description: +35% Jump Height
+  Description: Increase jump height.
   Type: 2
-  Value: 0.35
+  Value: 2
   Icon: {fileID: 21300000, guid: 8f6c5a24b746bf047b0fb7f0ae33d927, type: 3}

@@ -48,7 +48,7 @@ namespace Unity.FPS.Roguelike
                 Health health = nearbyObject.GetComponentInParent<Health>();
                 if (health != null && health.gameObject != m_Owner)
                 {
-                    health.TakeDamage(Damage * PlayerStats.Instance.DamageMult, m_Owner);
+                    health.TakeDamage(Damage + PlayerStats.Instance.DamageAdd, m_Owner);
                 }
             }
 

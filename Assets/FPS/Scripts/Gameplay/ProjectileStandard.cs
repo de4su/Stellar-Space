@@ -241,7 +241,7 @@ namespace Unity.FPS.Gameplay
                         m_ProjectileBase.Owner.CompareTag("Player") &&
                         PlayerStats.Instance != null)
                     {
-                        finalDamage *= PlayerStats.Instance.DamageMult;
+                        finalDamage += PlayerStats.Instance.DamageAdd;
                     }
 
                     GameObject _damageSource = m_ProjectileBase.Owner != null ? m_ProjectileBase.Owner : null;

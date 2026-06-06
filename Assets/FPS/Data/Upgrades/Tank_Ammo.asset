@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tank_Ammo
   m_EditorClassIdentifier: Roguelike::Unity.FPS.Roguelike.UpgradeData
   Title: Extended Mag
-  Description: +40% Ammo Capacity
+  Description: Increase ammo capacity.
   Type: 5
-  Value: 0.4
+  Value: 5
   Icon: {fileID: 21300000, guid: 0a2d3f156a20c3644bdf20976cd1f2ab, type: 3}

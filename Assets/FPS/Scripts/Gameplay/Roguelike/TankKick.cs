@@ -93,7 +93,7 @@ namespace Unity.FPS.Roguelike
                 var health = hit.GetComponentInParent<Unity.FPS.Game.Health>();
                 if (health)
                 {
-                    health.TakeDamage(KickDamage * PlayerStats.Instance.DamageMult, gameObject);
+                    health.TakeDamage(KickDamage + PlayerStats.Instance.DamageAdd, gameObject);
                 }
 
                 var rb = hit.GetComponent<Rigidbody>();

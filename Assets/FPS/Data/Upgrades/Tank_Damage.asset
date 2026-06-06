@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tank_Damage
   m_EditorClassIdentifier: Roguelike::Unity.FPS.Roguelike.UpgradeData
   Title: Heavy Rounds
-  Description: +20% Damage
+  Description: Increase weapon damage.
   Type: 4
-  Value: 0.2
+  Value: 10
   Icon: {fileID: 21300000, guid: a29094b5ac3f4d64485fcef823710314, type: 3}

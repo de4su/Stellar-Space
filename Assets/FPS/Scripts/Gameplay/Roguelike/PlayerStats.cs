@@ -8,16 +8,21 @@ namespace Unity.FPS.Roguelike
     {
         public static PlayerStats Instance { get; private set; }
 
-        public float SpeedMult = 1f;
-        public float JumpMult = 1f;
-        public float FireRateMult = 1f;
-        public float DamageMult = 1f;
-        public float MaxHealthMult = 1f;
-        public float AmmoMult = 1f;
+        public float SpeedAdd = 0f;
+        public float JumpAdd = 0f;
+        public float FireRateAdd = 0f;
+        public float DamageAdd = 0f;
+        public float MaxHealthAdd = 0f;
+        public float AmmoAdd = 0f;
 
         PlayerCharacterController m_Controller;
         PlayerWeaponsManager m_WeaponsManager;
         Health m_Health;
+
+        float m_BaseJumpForce;
+        float m_BaseMaxSpeedOnGround;
+        float m_BaseMaxSpeedInAir;
+        float m_BaseMaxHealth;
 
         void Awake()
         {
@@ -25,6 +30,18 @@ namespace Unity.FPS.Roguelike
             m_Controller = GetComponent<PlayerCharacterController>();
             m_WeaponsManager = GetComponent<PlayerWeaponsManager>();
             m_Health = GetComponent<Health>();
+
+            if (m_Controller)
+            {
+                m_BaseJumpForce = m_Controller.JumpForce;
+                m_BaseMaxSpeedOnGround = m_Controller.MaxSpeedOnGround;
+                m_BaseMaxSpeedInAir = m_Controller.MaxSpeedInAir;
+            }
+
+            if (m_Health)
+            {
+                m_BaseMaxHealth = m_Health.MaxHealth;
+            }
         }
 
         public void ApplyUpgrade(UpgradeData upgrade)
@@ -32,27 +49,29 @@ namespace Unity.FPS.Roguelike
             switch (upgrade.Type)
             {
                 case UpgradeType.PlayerSpeed:
-                    SpeedMult += upgrade.Value;
+                    SpeedAdd += upgrade.Value;
                     ApplySpeed();
                     break;
                 case UpgradeType.JumpHeight:
-                    JumpMult += upgrade.Value;
+                    JumpAdd += upgrade.Value;
                     ApplyJump();
                     break;
                 case UpgradeType.FireRate:
-                    FireRateMult += upgrade.Value;
+                    FireRateAdd += upgrade.Value;
                     ApplyFireRate(upgrade.Value);
                     break;
                 case UpgradeType.Damage:
-                    DamageMult += upgrade.Value;
+                    DamageAdd += upgrade.Value;
                     break;
                 case UpgradeType.MaxHealth:
                     float oldMax = m_Health.MaxHealth;
-                    m_Health.MaxHealth *= (1 + upgrade.Value);
-                    m_Health.Heal(m_Health.MaxHealth - oldMax);
+                    MaxHealthAdd += upgrade.Value;
+                    m_Health.MaxHealth = m_BaseMaxHealth + MaxHealthAdd;
+                    if (m_Health.MaxHealth > oldMax)
+                        m_Health.Heal(m_Health.MaxHealth - oldMax);
                     break;
                 case UpgradeType.AmmoClip:
-                    AmmoMult += upgrade.Value;
+                    AmmoAdd += upgrade.Value;
                     ApplyAmmo(upgrade.Value);
                     break;
             }
@@ -62,7 +81,8 @@ namespace Unity.FPS.Roguelike
         {
             foreach (var weapon in m_WeaponsManager.GetInventoryWeapons())
             {
-                weapon.DelayBetweenShots /= (1 + addValue);
+                // Simple additive approach: subtract from delay, clamped to a minimum
+                weapon.DelayBetweenShots = Mathf.Max(0.05f, weapon.DelayBetweenShots - addValue * 0.05f);
             }
         }
 
@@ -70,7 +90,7 @@ namespace Unity.FPS.Roguelike
         {
             foreach (var weapon in m_WeaponsManager.GetInventoryWeapons())
             {
-                weapon.MaxAmmo = Mathf.RoundToInt(weapon.MaxAmmo * (1 + addValue));
+                weapon.MaxAmmo += Mathf.RoundToInt(addValue);
             }
         }
 
@@ -78,10 +98,8 @@ namespace Unity.FPS.Roguelike
         {
             if (m_Controller)
             {
-                // In FPS template, PlayerCharacterController has MaxSpeedOnGround
-                // We might need to adjust based on exact variable names
-                m_Controller.MaxSpeedOnGround *= SpeedMult;
-                m_Controller.MaxSpeedInAir *= SpeedMult;
+                m_Controller.MaxSpeedOnGround = m_BaseMaxSpeedOnGround + SpeedAdd;
+                m_Controller.MaxSpeedInAir = m_BaseMaxSpeedInAir + SpeedAdd;
             }
         }
 
@@ -89,7 +107,7 @@ namespace Unity.FPS.Roguelike
         {
             if (m_Controller)
             {
-                m_Controller.JumpForce *= JumpMult;
+                m_Controller.JumpForce = m_BaseJumpForce + JumpAdd;
             }
         }
     }

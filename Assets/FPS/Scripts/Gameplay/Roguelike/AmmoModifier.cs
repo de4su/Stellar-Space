@@ -4,6 +4,6 @@ namespace Unity.FPS.Roguelike
 {
     public class AmmoModifier : MonoBehaviour
     {
-        public float AmmoMultiplier = 1.4f;
+        public float AmmoAddition = 5f;
     }
 }

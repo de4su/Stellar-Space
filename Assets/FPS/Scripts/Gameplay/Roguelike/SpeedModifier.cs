@@ -4,6 +4,6 @@ namespace Unity.FPS.Roguelike
 {
     public class SpeedModifier : MonoBehaviour
     {
-        public float SpeedMultiplier = 1.25f;
+        public float SpeedAddition = 3f;
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tank_Health
   m_EditorClassIdentifier: Roguelike::Unity.FPS.Roguelike.UpgradeData
   Title: Thick Plating
-  Description: +25% Max Health
+  Description: Increase maximum health.
   Type: 3
-  Value: 0.25
+  Value: 50
   Icon: {fileID: 21300000, guid: 0577d1dfc970820478ac8032679c80db, type: 3}

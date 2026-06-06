@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Agile_Speed
   m_EditorClassIdentifier: Roguelike::Unity.FPS.Roguelike.UpgradeData
   Title: Agile Speed
-  Description: +25% Move Speed
+  Description: Increase move speed.
   Type: 1
-  Value: 0.25
+  Value: 3
   Icon: {fileID: 21300000, guid: a41f203b1e834d546846d373e0dc46fc, type: 3}

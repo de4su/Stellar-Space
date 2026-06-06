@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Agile_FireRate
   m_EditorClassIdentifier: Roguelike::Unity.FPS.Roguelike.UpgradeData
   Title: Fast Trigger
-  Description: +30% Fire Rate
+  Description: Increase fire rate.
   Type: 0
-  Value: 0.3
+  Value: 2
   Icon: {fileID: 21300000, guid: b30c65bc26a2d6e438ed196d15f7eb06, type: 3}

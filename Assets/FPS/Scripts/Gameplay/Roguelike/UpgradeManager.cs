@@ -44,7 +44,87 @@ public enum PlayerMode { None, Tank, Agile }
 
         void Start()
         {
+            SyncUpgradesFromHierarchy();
             EnsureUIAndSubscribe();
+        }
+
+        void SyncUpgradesFromHierarchy()
+        {
+            var header = GameObject.Find("=======  perks modifiers =======");
+            if (header == null)
+            {
+                // Try searching with brackets just in case
+                header = GameObject.Find("[=======  perks modifiers =======]");
+            }
+
+            if (header != null)
+            {
+                SyncPool(TankUpgrades, header.transform.Find("- Tank Mode"));
+                SyncPool(AgileUpgrades, header.transform.Find("- Agile Mode"));
+                Debug.Log("[Roguelike] Synced UpgradeData values from Hierarchy.");
+            }
+            else
+            {
+                Debug.LogWarning("[Roguelike] Could not find '=======  perks modifiers =======' header in hierarchy to sync values.");
+            }
+        }
+
+        void SyncPool(List<UpgradeData> pool, Transform modeParent)
+        {
+            if (modeParent == null || pool == null) return;
+
+            foreach (var upgrade in pool)
+            {
+                if (upgrade == null) continue;
+
+                foreach (Transform child in modeParent)
+                {
+                    if (child.name.Contains(upgrade.Title))
+                    {
+                        UpdateUpgradeValue(upgrade, child);
+                        break;
+                    }
+                }
+            }
+        }
+
+        void UpdateUpgradeValue(UpgradeData upgrade, Transform child)
+        {
+            float val = 0;
+            bool found = false;
+            switch (upgrade.Type)
+            {
+                case UpgradeType.PlayerSpeed:
+                    var sm = child.GetComponent<SpeedModifier>();
+                    if (sm) { val = sm.SpeedAddition; found = true; }
+                    break;
+                case UpgradeType.JumpHeight:
+                    var jm = child.GetComponent<JumpModifier>();
+                    if (jm) { val = jm.JumpAddition; found = true; }
+                    break;
+                case UpgradeType.FireRate:
+                    var frm = child.GetComponent<FireRateModifier>();
+                    if (frm) { val = frm.FireRateAddition; found = true; }
+                    break;
+                case UpgradeType.Damage:
+                    var dm = child.GetComponent<DamageModifier>();
+                    if (dm) { val = dm.DamageAddition; found = true; }
+                    break;
+                case UpgradeType.MaxHealth:
+                    var hm = child.GetComponent<HealthModifier>();
+                    if (hm) { val = hm.HealthAddition; found = true; }
+                    break;
+                case UpgradeType.AmmoClip:
+                    var am = child.GetComponent<AmmoModifier>();
+                    if (am) { val = am.AmmoAddition; found = true; }
+                    break;
+            }
+
+            if (found)
+            {
+                upgrade.Value = val;
+                Debug.Log($"[Roguelike] Synced {upgrade.Title} from hierarchy: {val}");
+            }
         }
 
         void EnsureUIAndSubscribe()
@@ -215,6 +295,8 @@ else
                         float healthVal = 0.5f;
 
                         var header = GameObject.Find("=======  perks modifiers =======");
+                        if (header == null) header = GameObject.Find("[=======  perks modifiers =======]");
+
                         if (header != null)
                         {
                             foreach (Transform child in header.transform)
@@ -223,8 +305,8 @@ else
                                 {
                                     var speedMod = child.GetComponent<SpeedModifier>();
                                     var healthMod = child.GetComponent<HealthModifier>();
-                                    if (speedMod) speedVal = speedMod.SpeedMultiplier - 1f;
-                                    if (healthMod) healthVal = healthMod.HealthMultiplier - 1f;
+                                    if (speedMod) speedVal = speedMod.SpeedAddition;
+                                    if (healthMod) healthVal = healthMod.HealthAddition;
                                     break;
                                 }
                             }
@@ -249,6 +331,8 @@ else
                         float jumpVal = 0.2f;
 
                         var header = GameObject.Find("=======  perks modifiers =======");
+                        if (header == null) header = GameObject.Find("[=======  perks modifiers =======]");
+
                         if (header != null)
                         {
                             foreach (Transform child in header.transform)
@@ -257,8 +341,8 @@ else
                                 {
                                     var speedMod = child.GetComponent<SpeedModifier>();
                                     var jumpMod = child.GetComponent<JumpModifier>();
-                                    if (speedMod) speedVal = speedMod.SpeedMultiplier - 1f;
-                                    if (jumpMod) jumpVal = jumpMod.JumpMultiplier - 1f;
+                                    if (speedMod) speedVal = speedMod.SpeedAddition;
+                                    if (jumpMod) jumpVal = jumpMod.JumpAddition;
                                     break;
                                 }
                             }
