@@ -76,6 +76,9 @@ namespace Unity.FPS.Gameplay
         public bool IsPointingAtEnemy { get; private set; }
         public int ActiveWeaponIndex { get; private set; }
 
+        // Set by DualWield perk to prevent aiming while two weapons are active
+        public bool ForceNoAim = false;
+
         public UnityAction<WeaponController> OnSwitchedToWeapon;
         public UnityAction<WeaponController, int> OnAddedWeapon;
         public UnityAction<WeaponController, int> OnRemovedWeapon;
@@ -135,8 +138,8 @@ namespace Unity.FPS.Gameplay
                     activeWeapon.StartReloadAnimation();
                     return;
                 }
-                // handle aiming down sights
-                IsAiming = m_InputHandler.GetAimInputHeld();
+                // handle aiming down sights — blocked when ForceNoAim is set (e.g. DualWield perk)
+                IsAiming = m_InputHandler.GetAimInputHeld() && !ForceNoAim;
 
                 // handle shooting
                 bool hasFired = activeWeapon.HandleShootInputs(

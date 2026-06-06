@@ -26,6 +26,7 @@ public enum PlayerMode { None, Tank, Agile }
         public UpgradeData GrenadeSpecial; // level 10
         public UpgradeData TankSpecial; // level 7
         public UpgradeData AgileSpecial;
+        public UpgradeData DualWieldSpecial; // level 5, Tank only
 
         public UpgradeUI UpgradeUI;
 
@@ -114,6 +115,18 @@ public enum PlayerMode { None, Tank, Agile }
                 else if (CurrentMode == PlayerMode.Agile && AgileHookSpecial != null)
                 {
                     List<UpgradeData> special = new List<UpgradeData> { AgileHookSpecial };
+                    UpgradeUI.ShowOptions(special);
+                }
+                else
+                {
+                    ShowGenericPool();
+                }
+            }
+            else if (level == 5)
+            {
+                if (CurrentMode == PlayerMode.Tank && DualWieldSpecial != null)
+                {
+                    List<UpgradeData> special = new List<UpgradeData> { DualWieldSpecial };
                     UpgradeUI.ShowOptions(special);
                 }
                 else
@@ -281,6 +294,14 @@ else
                         ga.GrenadePrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/FPS/Prefabs/Roguelike_Grenade.prefab");
                     }
                     Debug.Log("[Roguelike] Special: Grenade Ability Unlocked!");
+                }
+            }
+            else if (upgrade.Title.Contains("DualWield"))
+            {
+                if (player.GetComponent<DualWield>() == null)
+                {
+                    player.AddComponent<DualWield>();
+                    Debug.Log("[Roguelike] Tank Special: Dual Wield Unlocked!");
                 }
             }
         }
